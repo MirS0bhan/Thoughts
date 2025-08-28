@@ -1,0 +1,8 @@
+# List of source files containing translatable strings.
+# Please keep this file sorted alphabetically.
+data/ir.mirsobhan.apps.Thoughts.desktop.in
+data/ir.mirsobhan.apps.Thoughts.metainfo.xml.in
+data/ir.mirsobhan.apps.Thoughts.gschema.xml
+src/main.py
+src/window.py
+src/window.ui

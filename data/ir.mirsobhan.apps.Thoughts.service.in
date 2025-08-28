@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=ir.mirsobhan.apps.Thoughts
+Exec=@bindir@/thoughts --gapplication-service

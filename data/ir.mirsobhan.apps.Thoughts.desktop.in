@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=thoughts
+Exec=thoughts
+Icon=ir.mirsobhan.apps.Thoughts
+Terminal=false
+Type=Application
+Categories=Utility;
+Keywords=GTK;
+StartupNotify=true
+DBusActivatable=true
