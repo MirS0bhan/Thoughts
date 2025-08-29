@@ -1,1 +1,6 @@
-/subprojects/blueprint-compiler
+jsconfig.json
+settings
+src/jsconfig.json
+src/settings
+
+.idea
