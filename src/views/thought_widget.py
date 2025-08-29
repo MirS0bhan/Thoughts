@@ -18,13 +18,8 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 from gi.repository import Adw
-from gi.repository import Gtk
+from gi.repository import Gtk, Gdk
 
-@Gtk.Template(resource_path='/ir/mirsobhan/apps/Thoughts/window.ui')
-class ThoughtsWindow(Adw.ApplicationWindow):
-    __gtype_name__ = 'ThoughtsWindow'
-
-    label = Gtk.Template.Child()
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+@Gtk.Template(resource_path='/ir/mirsobhan/apps/Thoughts/views/thought_widget.ui')
+class ThoughtWidget(Adw.Window):
+    __gtype_name__ = "ThoughtWidget"

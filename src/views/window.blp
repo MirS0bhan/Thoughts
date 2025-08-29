@@ -1,8 +1,8 @@
-  using Gtk 4.0;
+using Gtk 4.0;
 using Adw 1;
 
 template $ThoughtsWindow: Adw.ApplicationWindow {
-  title: _("Thoughbts");
+  title: _("Thoughts");
   default-width: 800;
   default-height: 600;
 
@@ -18,12 +18,20 @@ template $ThoughtsWindow: Adw.ApplicationWindow {
       }
     }
 
-    content: Label label {
-      label: _("Hello, World!");
+    content: ScrolledWindow scrolled_window {
+      vexpand: true;
+      hexpand: true;
 
-      styles [
-        "title-1",
-      ]
+      cursor: $GdkCursor {
+        name: "grab";
+      };
+
+      Viewport viewport {
+        Fixed canvas {
+          width-request: 2000;
+          height-request: 2000;
+        }
+      }
     };
   };
 }

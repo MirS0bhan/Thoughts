@@ -4,7 +4,8 @@ gnome = import('gnome')
 
 blueprints = custom_target('blueprints',
   input: files(
-    './window.blp',
+    'views/window.blp',
+    'views/thought_widget.blp'
   ),
   output: '.',
   command: [find_program('blueprint-compiler'), 'batch-compile', '@OUTPUT@', '@CURRENT_SOURCE_DIR@', '@INPUT@'],
@@ -38,7 +39,7 @@ configure_file(
 thoughts_sources = [
   '__init__.py',
   'main.py',
-  'window.py',
 ]
 
 install_data(thoughts_sources, install_dir: moduledir)
+install_subdir('views', install_dir: moduledir)
