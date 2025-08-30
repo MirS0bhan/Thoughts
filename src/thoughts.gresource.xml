@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
   <gresource prefix="/ir/mirsobhan/apps/Thoughts">
+    <file alias="style.css">views/styles.css</file>
+
+
+    <!-- UI files -->
     <file preprocess="xml-stripblanks">views/window.ui</file>
     <file preprocess="xml-stripblanks">views/thought_widget.ui</file>
     <file preprocess="xml-stripblanks">gtk/help-overlay.ui</file>
+  </gresource>
+
+  <!-- Icons files -->
+  <gresource prefix="/ir/mirsobhan/apps/Thoughts/icons/scalable/actions/">
+    <file preprocess="xml-stripblanks" alias="magic-wand-symbolic.svg">../data/icons/hicolor/actions/magic-wand-symbolic.svg</file>
+    <file preprocess="xml-stripblanks" alias="chat-message-new-symbolic.svg">../data/icons/hicolor/actions/chat-message-new-symbolic.svg</file>
   </gresource>
 </gresources>
