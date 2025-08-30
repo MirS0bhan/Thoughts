@@ -2,14 +2,18 @@ pkgdatadir = get_option('prefix') / get_option('datadir') / meson.project_name()
 moduledir = pkgdatadir / 'thoughts'
 gnome = import('gnome')
 
+
+blueprint_files = [
+  'views/window.blp',
+  'views/thought_widget.blp',
+]
+
 blueprints = custom_target('blueprints',
-  input: files(
-    'views/window.blp',
-    'views/thought_widget.blp'
-  ),
+  input: blueprint_files,
   output: '.',
   command: [find_program('blueprint-compiler'), 'batch-compile', '@OUTPUT@', '@CURRENT_SOURCE_DIR@', '@INPUT@'],
 )
+
 
 gnome.compile_resources('thoughts',
   'thoughts.gresource.xml',
