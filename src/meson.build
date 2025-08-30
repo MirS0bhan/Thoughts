@@ -4,8 +4,9 @@ gnome = import('gnome')
 
 
 blueprint_files = [
-  'views/window.blp',
-  'views/thought_widget.blp',
+  'ui/window.blp',
+  'ui/thought_widget.blp',
+  'ui/tag_widget.blp'
 ]
 
 blueprints = custom_target('blueprints',
@@ -46,4 +47,5 @@ thoughts_sources = [
 ]
 
 install_data(thoughts_sources, install_dir: moduledir)
-install_subdir('views', install_dir: moduledir)
+install_subdir('ui', install_dir: moduledir)
+install_subdir('lib', install_dir: moduledir)

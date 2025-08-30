@@ -22,7 +22,9 @@ from gi.repository import Gtk, Gdk
 
 from .thought_widget import ThoughtWidget
 
-@Gtk.Template(resource_path='/ir/mirsobhan/apps/Thoughts/views/window.ui')
+from thoughts.lib.model import ThoughtModel
+
+@Gtk.Template(resource_path='/ir/mirsobhan/apps/Thoughts/ui/window.ui')
 class ThoughtsWindow(Adw.ApplicationWindow):
     __gtype_name__ = 'ThoughtsWindow'
 
@@ -34,7 +36,8 @@ class ThoughtsWindow(Adw.ApplicationWindow):
         self.setup_pan_gesture()
         self.setup_thoughts()
 
-        a = ThoughtWidget()
+        t = ThoughtModel(title="Sona0",text="afddsa #adsf #sadf")
+        a = ThoughtWidget(t)
         self.scrolled_window.get_child().get_child().put(a,20,20)
 
     # Canvas gesture

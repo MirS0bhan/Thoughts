@@ -1,4 +1,4 @@
-# window.py
+# thought_widget.py
 #
 # Copyright 2025 sobhan
 #
@@ -20,15 +20,42 @@
 from gi.repository import Adw
 from gi.repository import Gtk, Gdk
 
+from thoughts.lib.model import ThoughtModel
 
-@Gtk.Template(resource_path='/ir/mirsobhan/apps/Thoughts/views/thought_widget.ui')
+from .tag_widget import TagWidget
+
+@Gtk.Template(resource_path='/ir/mirsobhan/apps/Thoughts/ui/thought_widget.ui')
 class ThoughtWidget(Gtk.Box):
     __gtype_name__ = "ThoughtWidget"
 
-    def __init__(self,*args,**kwargs):
+    _title = Gtk.Template.Child()
+    _text = Gtk.Template.Child()
+    _tags = Gtk.Template.Child()
+
+    def __init__(self, thought: ThoughtModel, *args,**kwargs):
         super().__init__(**kwargs)
+        self._thought ThoughtModel = thought
 
-    def setup_thought():
-        pass
+        self.setup_thought()
 
+    def setup_thought(self):
+        print(self._thought.title)
+        self.set_title(self._thought.title)
+        self.set_text(self._thought.text)
+        self.set_tags()
 
+    def set_title(self, title: str):
+        self._title.set_label(title)
+        self._thought.title = title
+
+    def set_text(self, text: str):
+        self._text.set_text(text)
+        self._thought.text = text
+
+    def set_tags(self):
+        for tag in self._thought.tags:
+            self._tags.append(TagWidget(tag))
+
+    @property
+    def thought(self):
+        return self._thought

@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
   <gresource prefix="/ir/mirsobhan/apps/Thoughts">
-    <file alias="style.css">views/styles.css</file>
+    <file alias="style.css">ui/styles.css</file>
 
 
     <!-- UI files -->
-    <file preprocess="xml-stripblanks">views/window.ui</file>
-    <file preprocess="xml-stripblanks">views/thought_widget.ui</file>
+    <file preprocess="xml-stripblanks">ui/window.ui</file>
+    <file preprocess="xml-stripblanks">ui/thought_widget.ui</file>
+    <file preprocess="xml-stripblanks">ui/tag_widget.ui</file>
     <file preprocess="xml-stripblanks">gtk/help-overlay.ui</file>
   </gresource>
 

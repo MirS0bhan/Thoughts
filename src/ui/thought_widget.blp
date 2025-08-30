@@ -15,8 +15,8 @@ template $ThoughtWidget: Box {
     orientation: vertical;
     spacing: 18;
 
-    Label {
-      label: _("sobhan");
+    Label _title {
+      label: _("Thought title");
       valign: start;
       halign: start;
 
@@ -25,31 +25,14 @@ template $ThoughtWidget: Box {
       ]
     }
 
-    Text {
-      text: _("this my first touch");
+    Text _text {
+      text: _("write your thought here");
     }
 
-    Box tags {
+    Box _tags {
       spacing: 8;
       orientation: horizontal;
 
-      Gtk.Button {
-        label: _("focus");
-
-        styles [
-          "accent",
-          "button-tag",
-        ]
-      }
-
-      Gtk.Button {
-        label: _("focus");
-
-        styles [
-          "accent",
-          "button-tag",
-        ]
-      }
     }
   }
 
