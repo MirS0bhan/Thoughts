@@ -1,0 +1,8 @@
+{
+    "name": "pypi-dependencies.json",
+    "buildsystem": "simple",
+    "build-commands": [],
+    "modules": [
+
+    ]
+}
