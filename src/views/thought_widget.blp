@@ -1,8 +1,59 @@
 using Gtk 4.0;
-using Adw 1;
 
-template $ThoughtWidget: Adw.Window {
-                               content: Label {
-                                          label: _("adfsadf");
-                                        };
-                             }
+template $ThoughtWidget: Box {
+  width-request: 500;
+  height-request: 100;
+
+  Box {
+    valign: center;
+    margin-top: 18;
+    margin-start: 18;
+    margin-end: 18;
+    margin-bottom: 18;
+    width-request: 500;
+    height-request: 100;
+    orientation: vertical;
+    spacing: 18;
+
+    Label {
+      label: _("sobhan");
+      valign: start;
+      halign: start;
+
+      styles [
+        "title-1",
+      ]
+    }
+
+    Text {
+      text: _("this my first touch");
+    }
+
+    Box tags {
+      spacing: 8;
+      orientation: horizontal;
+
+      Gtk.Button {
+        label: _("focus");
+
+        styles [
+          "accent",
+          "button-tag",
+        ]
+      }
+
+      Gtk.Button {
+        label: _("focus");
+
+        styles [
+          "accent",
+          "button-tag",
+        ]
+      }
+    }
+  }
+
+  styles [
+    "card",
+  ]
+}

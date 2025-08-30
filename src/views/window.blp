@@ -9,12 +9,37 @@ template $ThoughtsWindow: Adw.ApplicationWindow {
   content: Adw.ToolbarView {
     [top]
     Adw.HeaderBar {
+      [start]
+      Adw.SplitButton file_preset_button {
+        label: _("Open");
+        use-underline: true;
+        tooltip-text: _("Open Preset");
+      }
+
+      Button save_preset_button {
+        icon-name: "chat-message-new-symbolic";
+        tooltip-text: _("New thought");
+      }
+
+      [center]
+      Adw.WindowTitle {
+        title: _("Thoughts");
+        subtitle: _("");
+        visible: false;
+      }
+
       [end]
       MenuButton {
         primary: true;
         icon-name: "open-menu-symbolic";
         tooltip-text: _("Main Menu");
         menu-model: primary_menu;
+      }
+
+      [end]
+      Button {
+        icon-name: "magic-wand-symbolic";
+        tooltip-text: _("Magic order");
       }
     }
 
@@ -28,9 +53,15 @@ template $ThoughtsWindow: Adw.ApplicationWindow {
 
       Viewport viewport {
         Fixed canvas {
-          width-request: 2000;
-          height-request: 2000;
+          width-request: 3200;
+          height-request: 1800;
+
+
         }
+
+        styles [
+          "view",
+        ]
       }
     };
   };

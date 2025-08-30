@@ -20,6 +20,15 @@
 from gi.repository import Adw
 from gi.repository import Gtk, Gdk
 
+
 @Gtk.Template(resource_path='/ir/mirsobhan/apps/Thoughts/views/thought_widget.ui')
-class ThoughtWidget(Adw.Window):
+class ThoughtWidget(Gtk.Box):
     __gtype_name__ = "ThoughtWidget"
+
+    def __init__(self,*args,**kwargs):
+        super().__init__(**kwargs)
+
+    def setup_thought():
+        pass
+
+

@@ -34,7 +34,8 @@ class ThoughtsWindow(Adw.ApplicationWindow):
         self.setup_pan_gesture()
         self.setup_thoughts()
 
-        ThoughtWidget()
+        a = ThoughtWidget()
+        self.scrolled_window.get_child().get_child().put(a,20,20)
 
     # Canvas gesture
 
