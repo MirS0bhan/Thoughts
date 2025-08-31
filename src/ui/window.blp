@@ -16,9 +16,10 @@ template $ThoughtsWindow: Adw.ApplicationWindow {
         tooltip-text: _("Open Preset");
       }
 
-      Button save_preset_button {
+      Button new_thought {
         icon-name: "chat-message-new-symbolic";
         tooltip-text: _("New thought");
+        action-name: "app.new-thought";
       }
 
       [center]
@@ -51,7 +52,7 @@ template $ThoughtsWindow: Adw.ApplicationWindow {
         name: "grab";
       };
 
-      Viewport viewport {
+      Viewport _viewport {
         Fixed _canvas {
           width-request: 3200;
           height-request: 1800;

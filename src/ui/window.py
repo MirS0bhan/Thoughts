@@ -17,6 +17,8 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+import random
+
 from gi.repository import Adw
 from gi.repository import Gtk, Gdk
 
@@ -30,15 +32,19 @@ class ThoughtsWindow(Adw.ApplicationWindow):
 
     _scrolled_window = Gtk.Template.Child()
     _canvas = Gtk.Template.Child()
+    _viewport = Gtk.Template.Child()
     _headerbar = Gtk.Template.Child()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
+        self.application = self.get_application()
+
         self.setup_pan_gesture()
         self.setup_thoughts()
 
-        self.get_application().create_action("zen-mode", self.toggle_zen_mode, ["<Ctrl><Shift>z"])
+        self.application.create_action("zen-mode", self.toggle_zen_mode_action, ["<Ctrl><Shift>z"])
+        self.application.create_action("new-thought", self.new_thought_action, ["<Ctrl>t"])
 
     # Canvas gesture
 
@@ -82,7 +88,19 @@ class ThoughtsWindow(Adw.ApplicationWindow):
     def add_thought(self, thought, x,y):
         self._canvas.put(thought,x,y)
 
+    def new_thought_action(self, *args):
+        # FIXME: scroll to center of widget
+        tw = ThoughtWidget()
+        x,y = random.choice(range(3200)), random.choice(range(1800))
+        self._canvas.put(tw, x, y)
+
+        vadjustment = self._scrolled_window.get_vadjustment()
+        hadjustment = self._scrolled_window.get_hadjustment()
+
+        vadjustment.set_value(y)
+        hadjustment.set_value(x)
+
     # header
 
-    def toggle_zen_mode(self, *args):
+    def toggle_zen_mode_action(self, *args):
         self._headerbar.set_visible(not self._headerbar.is_visible())
