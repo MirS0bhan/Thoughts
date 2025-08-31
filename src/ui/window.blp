@@ -8,9 +8,9 @@ template $ThoughtsWindow: Adw.ApplicationWindow {
 
   content: Adw.ToolbarView {
     [top]
-    Adw.HeaderBar {
+    Adw.HeaderBar _headerbar {
       [start]
-      Adw.SplitButton file_preset_button {
+      Adw.SplitButton _file_preset_button {
         label: _("Open");
         use-underline: true;
         tooltip-text: _("Open Preset");
@@ -43,7 +43,7 @@ template $ThoughtsWindow: Adw.ApplicationWindow {
       }
     }
 
-    content: ScrolledWindow scrolled_window {
+    content: ScrolledWindow _scrolled_window {
       vexpand: true;
       hexpand: true;
 
@@ -52,7 +52,7 @@ template $ThoughtsWindow: Adw.ApplicationWindow {
       };
 
       Viewport viewport {
-        Fixed canvas {
+        Fixed _canvas {
           width-request: 3200;
           height-request: 1800;
 
@@ -82,6 +82,10 @@ menu primary_menu {
     item {
       label: _("_About Thoughts");
       action: "app.about";
+    }
+    item {
+      label: _("_Zen mode");
+      action: "app.zen-mode";
     }
   }
 }

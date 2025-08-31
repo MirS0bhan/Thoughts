@@ -28,7 +28,9 @@ from thoughts.lib.model import ThoughtModel
 class ThoughtsWindow(Adw.ApplicationWindow):
     __gtype_name__ = 'ThoughtsWindow'
 
-    scrolled_window = Gtk.Template.Child()
+    _scrolled_window = Gtk.Template.Child()
+    _canvas = Gtk.Template.Child()
+    _headerbar = Gtk.Template.Child()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -36,9 +38,7 @@ class ThoughtsWindow(Adw.ApplicationWindow):
         self.setup_pan_gesture()
         self.setup_thoughts()
 
-        t = ThoughtModel(title="Sona0",text="afddsa #adsf #sadf")
-        a = ThoughtWidget(t)
-        self.scrolled_window.get_child().get_child().put(a,20,20)
+        self.get_application().create_action("zen-mode", self.toggle_zen_mode, ["<Ctrl><Shift>z"])
 
     # Canvas gesture
 
@@ -54,26 +54,35 @@ class ThoughtsWindow(Adw.ApplicationWindow):
         gesture.connect("drag-update", self.on_pan_drag_update)
         gesture.connect("drag-end", self.on_pan_drag_end)
 
-        self.scrolled_window.add_controller(gesture)
+        self._scrolled_window.add_controller(gesture)
 
     def on_pan_drag_begin(self, gesture, start_x, start_y):
         grabbing_cursor = Gdk.Cursor.new_from_name("grabbing")
-        self.scrolled_window.set_cursor(grabbing_cursor)
+        self._scrolled_window.set_cursor(grabbing_cursor)
 
-        self.drag_start_x = self.scrolled_window.get_hadjustment().get_value()
-        self.drag_start_y = self.scrolled_window.get_vadjustment().get_value()
+        self.drag_start_x = self._scrolled_window.get_hadjustment().get_value()
+        self.drag_start_y = self._scrolled_window.get_vadjustment().get_value()
 
     def on_pan_drag_update(self, gesture, offset_x, offset_y):
-        hadj = self.scrolled_window.get_hadjustment()
-        vadj = self.scrolled_window.get_vadjustment()
+        hadj = self._scrolled_window.get_hadjustment()
+        vadj = self._scrolled_window.get_vadjustment()
 
         hadj.set_value(self.drag_start_x - offset_x)
         vadj.set_value(self.drag_start_y - offset_y)
 
     def on_pan_drag_end(self, gesture, offset_x, offset_y):
         grab_cursor = Gdk.Cursor.new_from_name("grab")
-        self.scrolled_window.set_cursor(grab_cursor)
+        self._scrolled_window.set_cursor(grab_cursor)
 
     # Thoughts section
+
     def setup_thoughts(self):
         pass
+
+    def add_thought(self, thought, x,y):
+        self._canvas.put(thought,x,y)
+
+    # header
+
+    def toggle_zen_mode(self, *args):
+        self._headerbar.set_visible(not self._headerbar.is_visible())
