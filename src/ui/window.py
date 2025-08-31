@@ -31,27 +31,72 @@ from thoughts.lib import ThoughtModel, ThoughtsManager
 class ThoughtsWindow(Adw.ApplicationWindow):
     __gtype_name__ = 'ThoughtsWindow'
 
+    path: Path
+    thoughts_manager: ThoughtsManager
+
     _scrolled_window = Gtk.Template.Child()
     _canvas = Gtk.Template.Child()
     _viewport = Gtk.Template.Child()
     _headerbar = Gtk.Template.Child()
+    _new_brain = Gtk.Template.Child()
+    _open_brain = Gtk.Template.Child()
+    _stack = Gtk.Template.Child()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.path = Path("test.t.json")
-
-        self.thoughts_manager = ThoughtsManager(self.path)
-        # self.thoughts_manager.load()
 
         self.application = self.get_application()
 
         self.setup_pan_gesture()
-        self.setup_thoughts()
 
         self.application.create_action("zen-mode", self.toggle_zen_mode_action, ["<Ctrl><Shift>z"])
         self.application.create_action("new-thought", self.new_thought_action, ["<Ctrl>t"])
         self.application.create_action("open-file", self.open_file_action, ["<Ctrl>o"])
         self.application.create_action("save-file", self.save_file_action, ["<Ctrl>s"])
+
+        self._new_brain.connect("clicked", self.create_new_file)
+        self._open_brain.connect("clicked", self.open_file)
+
+    def open_file_action(self, *args):
+        fd = Gtk.FileDialog()
+        fd.open(callback=self._on_file_opened)
+
+    def _on_file_opened(self, dialog, result):
+        file = dialog.open_finish(result)
+        if file:
+            self.path = Path(file.get_path())
+            self._load_thoughts()
+            self.transmision_to_canvas()
+
+    def _load_thoughts(self):
+        self.thoughts_manager = ThoughtsManager(self.path)
+        self.thoughts_manager.load()
+
+    def _dump_thoughts(self):
+        self.thoughts_manager = ThoughtsManager(self.path)
+        self.thoughts_manager.load()
+
+    def create_new_file(self, *args):
+        dialog = Gtk.FileDialog()
+        dialog.save(parent=None, cancellable=None, callback=self._on_file_saved)
+
+    def _on_file_saved(self, dialog, result):
+        file = dialog.save_finish(result)
+        if file:
+            self.path = Path(file.get_path())
+            if not self.path.exists():
+                self.path.touch()
+            self._dump_thoughts()
+
+        self.transmision_to_canvas()
+
+    def open_file(self, *args):
+        self.open_file_action()
+
+    def transmision_to_canvas(self, *args):
+        self._stack.set_visible_child(self._scrolled_window)
+        self.setup_thoughts()
+
 
     # Canvas gesture
 
@@ -90,42 +135,38 @@ class ThoughtsWindow(Adw.ApplicationWindow):
     # Thoughts section
 
     def setup_thoughts(self):
-        pass
+        for thought in self.thoughts_manager.thoughts_list:
+            self.insert_thought(ThoughtWidget(thought))
 
 
-    def add_thought(self, thought, x,y):
-        self._canvas.put(thought,x,y)
+    def insert_thought(self, thought_widget):
+        x,y = thought_widget.thought.position
+        self._canvas.put(thought_widget, x, y)
 
     def new_thought_action(self, *args):
-        # FIXME: scroll to center of widget
-        tw = ThoughtWidget()
-        self.thoughts_manager.add(tw.thought)
-        x,y = random.choice(range(3200)), random.choice(range(1800))
-        self._canvas.put(tw, x, y)
+        thought_widget = ThoughtWidget()
+        self.thoughts_manager.add(thought_widget.thought)
+        padding = 200
+        x,y = random.choice(range(padding,3200-padding)), random.choice(range(padding,1800-padding))
+        thought_widget.thought.position = (x,y)
 
-        vadjustment = self._scrolled_window.get_vadjustment()
-        hadjustment = self._scrolled_window.get_hadjustment()
+        self.insert_thought(thought_widget)
 
-        vadjustment.set_value(y)
-        hadjustment.set_value(x)
+        self._scroll_to_widget(thought_widget, (x,y))
 
     # header
 
     def toggle_zen_mode_action(self, *args):
         self._headerbar.set_visible(not self._headerbar.is_visible())
 
-    def open_file_action(self, *args):
-        fd = Gtk.FileDialog()
-        fd.open(callback=self.init_x)
-
-    def init_x(self, dialog, result):
-        file = dialog.open_finish(result)
-        if file:
-            self.path = Path(file.get_path())
-
-        self.thoughts_manager = ThoughtsManager(self.path)
-        self.thoughts_manager.load()
-
     def save_file_action(self, *args):
         self.thoughts_manager.dump()
-        print(2435)
+
+    def _scroll_to_widget(self,widget, xy = None):
+        # FIXME: scroll to center of widget
+        x,y = xy if xy else None
+        vadjustment = self._scrolled_window.get_vadjustment()
+        hadjustment = self._scrolled_window.get_hadjustment()
+
+        vadjustment.set_value(y)
+        hadjustment.set_value(x)
