@@ -1,11 +1,12 @@
 from dataclasses import dataclass, field
-from typing import List
+from typing import List, Optional
 import re
 
 @dataclass
 class ThoughtModel:
     title: str = ""
     text: str = ""
+    position = [0,0]
 
     @property
     def tags(self) -> List[str]:
