@@ -15,8 +15,8 @@ template $ThoughtWidget: Box {
     orientation: vertical;
     spacing: 18;
 
-    Label _title {
-      label: _("Thought title");
+    Entry _title {
+      placeholder-text: _("title");
       valign: start;
       halign: start;
 
@@ -25,14 +25,17 @@ template $ThoughtWidget: Box {
       ]
     }
 
-    Text _text {
-      text: _("write your thought here");
+    Entry _text {
+      placeholder-text: _("write about what you think");
+
+      styles [
+        "body",
+      ]
     }
 
     Box _tags {
       spacing: 8;
       orientation: horizontal;
-
     }
   }
 

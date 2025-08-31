@@ -32,29 +32,44 @@ class ThoughtWidget(Gtk.Box):
     _text = Gtk.Template.Child()
     _tags = Gtk.Template.Child()
 
-    def __init__(self, thought: ThoughtModel, *args,**kwargs):
+    def __init__(self, thought: ThoughtModel = None, *args,**kwargs):
         super().__init__(**kwargs)
-        self._thought ThoughtModel = thought
+        self._thought: ThoughtModel = ThoughtModel()
+        self._text_buffer = self._text.get_buffer()
+        self._tags_buffer = []
 
-        self.setup_thought()
+        self._text_buffer.connect("inserted_text", self._on_text_changed)
+
+        if thought:
+            self.setup_thought()
 
     def setup_thought(self):
-        print(self._thought.title)
         self.set_title(self._thought.title)
         self.set_text(self._thought.text)
         self.set_tags()
 
+
+    def _on_text_changed(self, *args):
+        self._thought.text = self._text_buffer.props.text
+        self.set_tags()
+
     def set_title(self, title: str):
-        self._title.set_label(title)
+        self._title.set_name(title)
         self._thought.title = title
 
     def set_text(self, text: str):
-        self._text.set_text(text)
+        self._text_buffer.set_text(text, -1)
         self._thought.text = text
 
     def set_tags(self):
         for tag in self._thought.tags:
-            self._tags.append(TagWidget(tag))
+            tw = TagWidget(tag)
+            self._tags.append(tw)
+            self._tags_buffer.append(tw)
+
+    def update_tags(self):
+        list(map(lambda widget: widget.unparent() ,self._tags_buffer))
+        self.set_tags()
 
     @property
     def thought(self):
