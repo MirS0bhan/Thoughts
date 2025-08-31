@@ -4,8 +4,8 @@ import re
 
 @dataclass
 class ThoughtModel:
-    title: str
-    text: str
+    title: str = ""
+    text: str = ""
 
     @property
     def tags(self) -> List[str]:
