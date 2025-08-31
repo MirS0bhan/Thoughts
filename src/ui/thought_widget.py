@@ -51,7 +51,7 @@ class ThoughtWidget(Gtk.Box):
 
     def _on_text_changed(self, *args):
         self._thought.text = self._text_buffer.props.text
-        self.set_tags()
+        self.update_tags()
 
     def set_title(self, title: str):
         self._title.set_name(title)

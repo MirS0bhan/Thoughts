@@ -18,13 +18,14 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import random
+from pathlib import Path
 
 from gi.repository import Adw
 from gi.repository import Gtk, Gdk
 
 from .thought_widget import ThoughtWidget
 
-from thoughts.lib.model import ThoughtModel
+from thoughts.lib import ThoughtModel, ThoughtsManager
 
 @Gtk.Template(resource_path='/ir/mirsobhan/apps/Thoughts/ui/window.ui')
 class ThoughtsWindow(Adw.ApplicationWindow):
@@ -37,6 +38,10 @@ class ThoughtsWindow(Adw.ApplicationWindow):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self.path = Path("test.t.json")
+
+        self.thoughts_manager = ThoughtsManager(self.path)
+        # self.thoughts_manager.load()
 
         self.application = self.get_application()
 
@@ -45,6 +50,8 @@ class ThoughtsWindow(Adw.ApplicationWindow):
 
         self.application.create_action("zen-mode", self.toggle_zen_mode_action, ["<Ctrl><Shift>z"])
         self.application.create_action("new-thought", self.new_thought_action, ["<Ctrl>t"])
+        self.application.create_action("open-file", self.open_file_action, ["<Ctrl>o"])
+        self.application.create_action("save-file", self.save_file_action, ["<Ctrl>s"])
 
     # Canvas gesture
 
@@ -85,12 +92,14 @@ class ThoughtsWindow(Adw.ApplicationWindow):
     def setup_thoughts(self):
         pass
 
+
     def add_thought(self, thought, x,y):
         self._canvas.put(thought,x,y)
 
     def new_thought_action(self, *args):
         # FIXME: scroll to center of widget
         tw = ThoughtWidget()
+        self.thoughts_manager.add(tw.thought)
         x,y = random.choice(range(3200)), random.choice(range(1800))
         self._canvas.put(tw, x, y)
 
@@ -104,3 +113,19 @@ class ThoughtsWindow(Adw.ApplicationWindow):
 
     def toggle_zen_mode_action(self, *args):
         self._headerbar.set_visible(not self._headerbar.is_visible())
+
+    def open_file_action(self, *args):
+        fd = Gtk.FileDialog()
+        fd.open(callback=self.init_x)
+
+    def init_x(self, dialog, result):
+        file = dialog.open_finish(result)
+        if file:
+            self.path = Path(file.get_path())
+
+        self.thoughts_manager = ThoughtsManager(self.path)
+        self.thoughts_manager.load()
+
+    def save_file_action(self, *args):
+        self.thoughts_manager.dump()
+        print(2435)
