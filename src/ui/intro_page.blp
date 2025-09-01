@@ -1,0 +1,46 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $IntroPage : Box {
+  halign: center;
+  valign: center;
+  hexpand: true;
+  vexpand: true;
+
+  Adw.StatusPage {
+    icon-name: "ir.mirsobhan.apps.Thoughts";
+    valign: center;
+    halign: center;
+    tooltip-text: _("Sudoku Game Icon");
+
+    Label {
+      label: _("Thoughts");
+      tooltip-text: _("Sudoku Game");
+
+      styles [
+        "title-1",
+      ]
+    }
+
+    Adw.Clamp {
+    maximum-size: 200;
+
+      Box {
+        orientation: vertical;
+        Button _new_brain {
+          label: "New brain";
+          action-name: "app.new-file";
+
+          styles ["pill"]
+        }
+
+        Button _open_brain {
+          label: "Open";
+          action-name: "app.open-file";
+
+          styles ["pill", "accent"]
+        }
+      }
+    }
+  }
+}

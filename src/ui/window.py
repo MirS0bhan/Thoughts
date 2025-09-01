@@ -24,6 +24,8 @@ from gi.repository import Adw
 from gi.repository import Gtk, Gdk
 
 from .thought_widget import ThoughtWidget
+from .intro_page import IntroPage
+from .canvas_screen import CanvasScreen
 
 from thoughts.lib import ThoughtModel, ThoughtsManager
 
@@ -34,29 +36,44 @@ class ThoughtsWindow(Adw.ApplicationWindow):
     path: Path
     thoughts_manager: ThoughtsManager
 
-    _scrolled_window = Gtk.Template.Child()
-    _canvas = Gtk.Template.Child()
-    _viewport = Gtk.Template.Child()
     _headerbar = Gtk.Template.Child()
-    _new_brain = Gtk.Template.Child()
-    _open_brain = Gtk.Template.Child()
     _stack = Gtk.Template.Child()
+    _canvas_screen = Gtk.Template.Child()
+    _intro_page = Gtk.Template.Child()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
         self.application = self.get_application()
 
-        self.setup_pan_gesture()
-
-        self.application.create_action("zen-mode", self.toggle_zen_mode_action, ["<Ctrl><Shift>z"])
-        self.application.create_action("new-thought", self.new_thought_action, ["<Ctrl>t"])
+        self.application.create_action("new-file", self.new_file_action, ["<Ctrl>n"])
         self.application.create_action("open-file", self.open_file_action, ["<Ctrl>o"])
         self.application.create_action("save-file", self.save_file_action, ["<Ctrl>s"])
+        self.application.create_action("zen-mode", self.toggle_zen_mode_action, ["<Ctrl><Shift>z"])
+        self.application.create_action("new-thought", self.new_thought_action, ["<Ctrl>t"])
 
-        self._new_brain.connect("clicked", self.create_new_file)
-        self._open_brain.connect("clicked", self.open_file)
 
+    # actions
+    def new_thought_action(self, *args):
+        new_thought = self.thoughts_manager.new()
+        thought_widget = ThoughtWidget(new_thought)
+
+        padding = 200
+        x,y = random.choice(range(padding,3200-padding)), random.choice(range(padding,1800-padding))
+        thought_widget.thought.position = [x,y]
+
+        self._canvas_screen.insert_thought(thought_widget, scroll = True)
+
+
+    def toggle_zen_mode_action(self, *args):
+        self._headerbar.set_visible(not self._headerbar.is_visible())
+
+    def save_file_action(self, *args):
+        self.thoughts_manager.dump()
+
+    def new_file_action(self, *args):
+        dialog = Gtk.FileDialog()
+        dialog.save(parent=None, cancellable=None, callback=self._on_file_saved)
 
     def open_file_action(self, *args):
         fd = Gtk.FileDialog()
@@ -69,18 +86,6 @@ class ThoughtsWindow(Adw.ApplicationWindow):
             self._load_thoughts()
             self.transmision_to_canvas()
 
-    def _load_thoughts(self):
-        self.thoughts_manager = ThoughtsManager(self.path)
-        self.thoughts_manager.load()
-
-    def _dump_thoughts(self):
-        self.thoughts_manager = ThoughtsManager(self.path)
-        self.thoughts_manager.dump()
-
-    def create_new_file(self, *args):
-        dialog = Gtk.FileDialog()
-        dialog.save(parent=None, cancellable=None, callback=self._on_file_saved)
-
     def _on_file_saved(self, dialog, result):
         file = dialog.save_finish(result)
         if file:
@@ -91,89 +96,23 @@ class ThoughtsWindow(Adw.ApplicationWindow):
 
         self.transmision_to_canvas()
 
-    def open_file(self, *args):
-        self.open_file_action()
+    def _load_thoughts(self):
+        self.thoughts_manager = ThoughtsManager(self.path)
+        self.thoughts_manager.load()
+
+    def _dump_thoughts(self):
+        self.thoughts_manager = ThoughtsManager(self.path)
+        self.thoughts_manager.dump()
 
     def transmision_to_canvas(self, *args):
-        self._stack.set_visible_child(self._scrolled_window)
+        self._stack.set_visible_child(self._canvas_screen)
         self.setup_thoughts()
 
-        #for i in range(1):
-            #self.insert_thought(ThoughtWidget(ThoughtMode  l(text="eghsdh",title="safd", position=[i**2,95*i])))
-            #print(i)
-
-
-    # Canvas gesture
-
-    def setup_pan_gesture(self):
-        gesture = Gtk.GestureDrag()
-
-        gesture.set_button(Gdk.BUTTON_PRIMARY)
-
-        self.drag_start_x = 0
-        self.drag_start_y = 0
-
-        gesture.connect("drag-begin", self.on_pan_drag_begin)
-        gesture.connect("drag-update", self.on_pan_drag_update)
-        gesture.connect("drag-end", self.on_pan_drag_end)
-
-        self._scrolled_window.add_controller(gesture)
-
-    def on_pan_drag_begin(self, gesture, start_x, start_y):
-        grabbing_cursor = Gdk.Cursor.new_from_name("grabbing")
-        self._scrolled_window.set_cursor(grabbing_cursor)
-
-        self.drag_start_x = self._scrolled_window.get_hadjustment().get_value()
-        self.drag_start_y = self._scrolled_window.get_vadjustment().get_value()
-
-    def on_pan_drag_update(self, gesture, offset_x, offset_y):
-        hadj = self._scrolled_window.get_hadjustment()
-        vadj = self._scrolled_window.get_vadjustment()
-
-        hadj.set_value(self.drag_start_x - offset_x)
-        vadj.set_value(self.drag_start_y - offset_y)
-
-    def on_pan_drag_end(self, gesture, offset_x, offset_y):
-        grab_cursor = Gdk.Cursor.new_from_name("grab")
-        self._scrolled_window.set_cursor(grab_cursor)
 
     # Thoughts section
 
     def setup_thoughts(self):
-        print(23,self.thoughts_manager.thoughts_list)
         for thought in self.thoughts_manager.thoughts_list:
-            self.insert_thought(ThoughtWidget(thought))
+            self._canvas_screen.insert_thought(ThoughtWidget(thought))
 
 
-    def insert_thought(self, thought_widget):
-        print(thought_widget.thought)
-        x,y = thought_widget.thought.position
-        self._canvas.put(thought_widget, x, y)
-
-    def new_thought_action(self, *args):
-        thought_widget = ThoughtWidget()
-        self.thoughts_manager.add(thought_widget.thought)
-        padding = 200
-        x,y = random.choice(range(padding,3200-padding)), random.choice(range(padding,1800-padding))
-        thought_widget.thought.position = [x,y]
-
-        self.insert_thought(thought_widget)
-
-        self._scroll_to_widget(thought_widget, (x,y))
-
-    # header
-
-    def toggle_zen_mode_action(self, *args):
-        self._headerbar.set_visible(not self._headerbar.is_visible())
-
-    def save_file_action(self, *args):
-        self.thoughts_manager.dump()
-
-    def _scroll_to_widget(self,widget, xy = None):
-        # FIXME: scroll to center of widget
-        x,y = xy if xy else None
-        vadjustment = self._scrolled_window.get_vadjustment()
-        hadjustment = self._scrolled_window.get_hadjustment()
-
-        vadjustment.set_value(y)
-        hadjustment.set_value(x)

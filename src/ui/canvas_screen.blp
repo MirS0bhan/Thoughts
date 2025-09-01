@@ -1,0 +1,21 @@
+using Gtk 4.0;
+
+template $CanvasScreen : ScrolledWindow {
+  vexpand: true;
+  hexpand: true;
+
+  cursor: $GdkCursor {
+    name: "grab";
+  };
+
+  Viewport _viewport {
+    Fixed _canvas {
+      width-request: 3200;
+      height-request: 1800;
+    }
+
+    styles [
+      "view",
+    ]
+  }
+}

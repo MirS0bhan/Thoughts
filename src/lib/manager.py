@@ -22,6 +22,12 @@ class ThoughtsManager:
     def add(self, thought: ThoughtModel):
         self._database.thoughts_list.append(thought)
 
+    def new(self):
+        new_thought = ThoughtModel()
+        self._database.thoughts_list.append(new_thought)
+
+        return new_thought
+
     @_atomic
     def load(self):
         with self.path.open(mode="r", encoding="utf-8") as file:

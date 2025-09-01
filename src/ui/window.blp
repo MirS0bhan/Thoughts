@@ -49,59 +49,10 @@ template $ThoughtsWindow: Adw.ApplicationWindow {
       transition-type: crossfade;
       transition-duration: 300;
 
-      Adw.StatusPage _intro_page {
-        icon-name: "ir.mirsobhan.apps.Thoughts";
-        valign: center;
-        tooltip-text: _("Sudoku Game Icon");
-
-        Label {
-          label: _("Thoughts");
-          tooltip-text: _("Sudoku Game");
-
-          styles [
-            "title-1",
-          ]
-        }
-
-        Adw.Clamp {
-        maximum-size: 200;
-
-          Box {
-            orientation: vertical;
-            Button _new_brain {
-              label: "New brain";
-              styles ["pill"]
-            }
-
-            Button _open_brain {
-              label: "Open";
-              styles ["pill", "accent"]
-            }
-          }
-        }
-      }
 
 
-
-      ScrolledWindow _scrolled_window {
-        vexpand: true;
-        hexpand: true;
-
-        cursor: $GdkCursor {
-          name: "grab";
-        };
-
-        Viewport _viewport {
-          Fixed _canvas {
-            width-request: 3200;
-            height-request: 1800;
-          }
-
-          styles [
-            "view",
-          ]
-        }
-      }
+      $IntroPage _intro_page {}
+      $CanvasScreen _canvas_screen {}
     };
   };
 }
