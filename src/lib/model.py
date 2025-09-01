@@ -6,7 +6,7 @@ import re
 class ThoughtModel:
     title: str = ""
     text: str = ""
-    position = [0,0]
+    position: List[int] = field(default_factory=list)
 
     @property
     def tags(self) -> List[str]:

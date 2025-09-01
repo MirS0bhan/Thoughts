@@ -57,6 +57,7 @@ class ThoughtsWindow(Adw.ApplicationWindow):
         self._new_brain.connect("clicked", self.create_new_file)
         self._open_brain.connect("clicked", self.open_file)
 
+
     def open_file_action(self, *args):
         fd = Gtk.FileDialog()
         fd.open(callback=self._on_file_opened)
@@ -74,7 +75,7 @@ class ThoughtsWindow(Adw.ApplicationWindow):
 
     def _dump_thoughts(self):
         self.thoughts_manager = ThoughtsManager(self.path)
-        self.thoughts_manager.load()
+        self.thoughts_manager.dump()
 
     def create_new_file(self, *args):
         dialog = Gtk.FileDialog()
@@ -96,6 +97,10 @@ class ThoughtsWindow(Adw.ApplicationWindow):
     def transmision_to_canvas(self, *args):
         self._stack.set_visible_child(self._scrolled_window)
         self.setup_thoughts()
+
+        #for i in range(1):
+            #self.insert_thought(ThoughtWidget(ThoughtMode  l(text="eghsdh",title="safd", position=[i**2,95*i])))
+            #print(i)
 
 
     # Canvas gesture
@@ -135,11 +140,13 @@ class ThoughtsWindow(Adw.ApplicationWindow):
     # Thoughts section
 
     def setup_thoughts(self):
+        print(23,self.thoughts_manager.thoughts_list)
         for thought in self.thoughts_manager.thoughts_list:
             self.insert_thought(ThoughtWidget(thought))
 
 
     def insert_thought(self, thought_widget):
+        print(thought_widget.thought)
         x,y = thought_widget.thought.position
         self._canvas.put(thought_widget, x, y)
 
@@ -148,7 +155,7 @@ class ThoughtsWindow(Adw.ApplicationWindow):
         self.thoughts_manager.add(thought_widget.thought)
         padding = 200
         x,y = random.choice(range(padding,3200-padding)), random.choice(range(padding,1800-padding))
-        thought_widget.thought.position = (x,y)
+        thought_widget.thought.position = [x,y]
 
         self.insert_thought(thought_widget)
 
