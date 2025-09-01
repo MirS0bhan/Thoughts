@@ -46,14 +46,19 @@ class ThoughtsWindow(Adw.ApplicationWindow):
 
         self.application = self.get_application()
 
+        self.setup_actions()
+
+    # actions
+
+    def setup_actions(self):
         self.application.create_action("new-file", self.new_file_action, ["<Ctrl>n"])
         self.application.create_action("open-file", self.open_file_action, ["<Ctrl>o"])
+
+    def setup_canvas_actions(self):
         self.application.create_action("save-file", self.save_file_action, ["<Ctrl>s"])
         self.application.create_action("zen-mode", self.toggle_zen_mode_action, ["<Ctrl><Shift>z"])
         self.application.create_action("new-thought", self.new_thought_action, ["<Ctrl>t"])
 
-
-    # actions
     def new_thought_action(self, *args):
         new_thought = self.thoughts_manager.new()
         thought_widget = ThoughtWidget(new_thought)
@@ -106,6 +111,7 @@ class ThoughtsWindow(Adw.ApplicationWindow):
 
     def transmision_to_canvas(self, *args):
         self._stack.set_visible_child(self._canvas_screen)
+        self.setup_canvas_actions()
         self.setup_thoughts()
 
 
