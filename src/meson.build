@@ -9,6 +9,7 @@ blueprint_files = [
   'ui/tag_widget.blp',
   'ui/canvas_screen.blp',
   'ui/intro_page.blp',
+  'ui/filter_widget.blp',
 ]
 
 blueprints = custom_target('blueprints',

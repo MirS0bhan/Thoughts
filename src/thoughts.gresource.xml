@@ -10,6 +10,7 @@
     <file preprocess="xml-stripblanks">ui/tag_widget.ui</file>
     <file preprocess="xml-stripblanks">ui/intro_page.ui</file>
     <file preprocess="xml-stripblanks">ui/canvas_screen.ui</file>
+    <file preprocess="xml-stripblanks">ui/filter_widget.ui</file>
     <file preprocess="xml-stripblanks">gtk/help-overlay.ui</file>
   </gresource>
 

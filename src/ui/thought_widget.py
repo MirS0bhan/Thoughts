@@ -12,8 +12,9 @@ class ThoughtWidget(Gtk.Box):
     _text = Gtk.Template.Child()
     _tags = Gtk.Template.Child()
 
-    def __init__(self, thought: ThoughtModel = None, *args, **kwargs):
+    def __init__(self, thought: ThoughtModel = None, on_tag_filter_clicked=None, *args, **kwargs):
         super().__init__(**kwargs)
+        self.on_tag_filter_clicked = on_tag_filter_clicked
         self._thought: ThoughtModel = thought if thought else ThoughtModel(text="safdg")
         self._tags_buffer = []
 
@@ -52,7 +53,7 @@ class ThoughtWidget(Gtk.Box):
 
     def set_tags(self):
         for tag in self._thought.tags:
-            tw = TagWidget(tag)
+            tw = TagWidget(tag, self.on_tag_filter_clicked)
             self._tags.append(tw)
             self._tags_buffer.append(tw)
 

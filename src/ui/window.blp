@@ -45,14 +45,19 @@ template $ThoughtsWindow: Adw.ApplicationWindow {
       }
     }
 
-    content: Stack _stack {
-      transition-type: crossfade;
-      transition-duration: 300;
+    content: Adw.OverlaySplitView _tag_filter_split_view {
+      collapsed: true;
+      enable-hide-gesture: true;
 
 
+      content: Stack _stack {
+        transition-type: crossfade;
+        transition-duration: 300;
 
-      $IntroPage _intro_page {}
-      $CanvasScreen _canvas_screen {}
+
+        $IntroPage _intro_page {}
+        $CanvasScreen _canvas_screen {}
+      };
     };
   };
 }

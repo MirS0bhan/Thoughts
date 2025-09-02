@@ -1,5 +1,8 @@
 from pathlib import Path
 from json import loads as json_load, dumps as json_dumps
+
+from typing import List
+
 from .model import ThoughtModel, ThoughtsDatabaseModel
 
 
@@ -17,13 +20,41 @@ def _atomic(func):
 
 
 class ThoughtsManager:
-    def __init__(self, database: Path):
+    def __init__(self, database: Path, index: bool = True):
         self.path = database
         self._is_database_locked = False
         self._database = ThoughtsDatabaseModel()
 
+        self._index: Dict[str, List[ThoughtModel]] = {}
+        if index:
+            self._build_index()
+
+    def _build_index(self):
+        self._index.clear()
+        for thought in self._database.thoughts_list:
+            for tag in thought.tags:
+                self._index.setdefault(tag, []).append(thought)
+
     def add(self, thought: ThoughtModel):
         self._database.thoughts_list.append(thought)
+        for tag in thought.tags:
+            self._index.setdefault(tag, []).append(thought)
+
+    def filter(self, *tags: str) -> List[ThoughtModel]:
+        if not tags:
+            return self._database.thoughts_list[:]
+
+        sets_of_thoughts: List[Set[ThoughtModel]] = []
+        for tag in tags:
+            thoughts_for_tag = set(self._index.get(tag, []))
+            sets_of_thoughts.append(thoughts_for_tag)
+
+        if not sets_of_thoughts:
+            return []
+
+        filtered_thoughts = set.intersection(*sets_of_thoughts)
+
+        return list(filtered_thoughts)
 
     def new(self):
         new_thought = ThoughtModel()

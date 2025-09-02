@@ -24,7 +24,10 @@ from gi.repository import Gtk
 class TagWidget(Gtk.Button):
     __gtype_name__ = "TagWidget"
 
-    def __init__(self, label: str, **kwargs):
+    def __init__(self, label: str, on_tag_filter_clicked, **kwargs):
         super().__init__(**kwargs)
 
+        self.label = label
         self.set_label(label)
+
+        self.connect("clicked", on_tag_filter_clicked)

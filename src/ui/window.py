@@ -25,6 +25,7 @@ from gi.repository import Adw
 from gi.repository import Gtk
 
 from .thought_widget import ThoughtWidget
+from .filter_widget import FilterWidget
 
 from thoughts.lib import ThoughtsManager
 
@@ -40,6 +41,7 @@ class ThoughtsWindow(Adw.ApplicationWindow):
     thoughts_manager: ThoughtsManager
 
     _headerbar = Gtk.Template.Child()
+    _tag_filter_split_view = Gtk.Template.Child()
     _stack = Gtk.Template.Child()
     _canvas_screen = Gtk.Template.Child()
     _intro_page = Gtk.Template.Child()
@@ -68,7 +70,7 @@ class ThoughtsWindow(Adw.ApplicationWindow):
 
     def new_thought_action(self, *args):
         new_thought = self.thoughts_manager.new()
-        thought_widget = ThoughtWidget(new_thought)
+        thought_widget = ThoughtWidget(new_thought, on_tag_filter_clicked)
 
         position = self.find_place_to_insert_thought()
         thought_widget.thought.position = position
@@ -133,8 +135,16 @@ class ThoughtsWindow(Adw.ApplicationWindow):
 
     def setup_thoughts(self):
         for thought in self.thoughts_manager.thoughts_list:
-            self._canvas_screen.insert_thought(thought_widget := ThoughtWidget(thought))
+            self._canvas_screen.insert_thought(thought_widget := ThoughtWidget(thought, self.on_tag_filter_clicked))
         # here it would scroll to the last thought.
         # this can also be done by adding last thought in database
         # FIXME: not scrolling
         self._canvas_screen._scroll_to_thought(thought_widget)
+
+    def on_tag_filter_clicked(self, tag):
+        self.thoughts_manager._build_index()
+        thought_list = self.thoughts_manager.filter(tag.label)
+        fw = FilterWidget([tag.label], thought_list)
+        self._tag_filter_split_view.set_sidebar(fw)
+        self._tag_filter_split_view.set_show_sidebar(True)
+

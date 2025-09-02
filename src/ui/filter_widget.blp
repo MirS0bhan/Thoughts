@@ -1,0 +1,22 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $FilterWidget: Box {
+  Box {
+    margin-top: 30;
+    margin-start: 30;
+    margin-end: 30;
+    margin-bottom: 30;
+    spacing: 50;
+
+    orientation: horizontal;
+
+    Box _filter_tags {
+      orientation: vertical;
+    }
+
+    Box _thoughts_list {
+      hexpand: false;
+    }
+  }
+}
