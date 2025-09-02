@@ -119,6 +119,11 @@ class ThoughtsWindow(Adw.ApplicationWindow):
 
     def setup_thoughts(self):
         for thought in self.thoughts_manager.thoughts_list:
-            self._canvas_screen.insert_thought(ThoughtWidget(thought))
+            self._canvas_screen.insert_thought(thought_widget:=ThoughtWidget(thought))
+        # here it would scroll to the last thought.
+        # this can also be done by adding last thought in database
+        # FIXME: not scrolling
+        self._canvas_screen._scroll_to_thought(thought_widget)
+
 
 

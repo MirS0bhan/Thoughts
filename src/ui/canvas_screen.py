@@ -20,6 +20,8 @@
 from gi.repository import Adw
 from gi.repository import Gtk, Gdk
 
+from . import utils
+from .thought_widget import ThoughtWidget
 
 @Gtk.Template(resource_path='/ir/mirsobhan/apps/Thoughts/ui/canvas_screen.ui')
 class CanvasScreen(Gtk.ScrolledWindow):
@@ -74,13 +76,8 @@ class CanvasScreen(Gtk.ScrolledWindow):
         self._canvas.put(thought_widget, x, y)
 
         if scroll:
-            self._scroll_to_widget(thought_widget, (x,y))
+            self._scroll_to_thought(thought_widget)
 
-    def _scroll_to_widget(self, widget, xy = None):
-        # FIXME: scroll to center of widget
-        x,y = xy if xy else None
-        vadjustment = self.get_vadjustment()
-        hadjustment = self.get_hadjustment()
-
-        vadjustment.set_value(y)
-        hadjustment.set_value(x)
+    def _scroll_to_thought(self, thought_widget: ThoughtWidget):
+        tought = thought_widget.thought
+        utils._scroll_to_widget(self, tought.position)
