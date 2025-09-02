@@ -63,11 +63,17 @@ class ThoughtsWindow(Adw.ApplicationWindow):
         new_thought = self.thoughts_manager.new()
         thought_widget = ThoughtWidget(new_thought)
 
-        padding = 200
-        x,y = random.choice(range(padding,3200-padding)), random.choice(range(padding,1800-padding))
+        position = find_place_to_insert_thought()
         thought_widget.thought.position = [x,y]
 
         self._canvas_screen.insert_thought(thought_widget, scroll = True)
+
+    def find_place_to_insert_thought(self) -> Tuple[int] :
+        # TODO: reimplement function to place cards ensuring no overlap
+        padding = 200
+        x,y = random.choice(range(padding,3200-padding)), random.choice(range(padding,1800-padding))
+
+        return (x,y)
 
 
     def toggle_zen_mode_action(self, *args):
