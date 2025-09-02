@@ -17,13 +17,12 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from gi.repository import Adw
-from gi.repository import Gtk, Gdk
+from gi.repository import Gtk
 
 
-@Gtk.Template(resource_path='/ir/mirsobhan/apps/Thoughts/ui/intro_page.ui')
+@Gtk.Template(resource_path="/ir/mirsobhan/apps/Thoughts/ui/intro_page.ui")
 class IntroPage(Gtk.Box):
-    __gtype_name__ = 'IntroPage'
+    __gtype_name__ = "IntroPage"
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

@@ -1,10 +1,10 @@
-from gi.repository import Adw
-from gi.repository import Gtk, Gdk
+from gi.repository import Gtk
 
 from thoughts.lib.model import ThoughtModel
 from .tag_widget import TagWidget
 
-@Gtk.Template(resource_path='/ir/mirsobhan/apps/Thoughts/ui/thought_widget.ui')
+
+@Gtk.Template(resource_path="/ir/mirsobhan/apps/Thoughts/ui/thought_widget.ui")
 class ThoughtWidget(Gtk.Box):
     __gtype_name__ = "ThoughtWidget"
 

@@ -17,13 +17,12 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from gi.repository import Adw
-from gi.repository import Gtk, Gdk
+from gi.repository import Gtk
 
 
-@Gtk.Template(resource_path='/ir/mirsobhan/apps/Thoughts/ui/tag_widget.ui')
+@Gtk.Template(resource_path="/ir/mirsobhan/apps/Thoughts/ui/tag_widget.ui")
 class TagWidget(Gtk.Button):
-    __gtype_name__="TagWidget"
+    __gtype_name__ = "TagWidget"
 
     def __init__(self, label: str, **kwargs):
         super().__init__(**kwargs)

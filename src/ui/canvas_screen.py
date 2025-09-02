@@ -17,15 +17,15 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from gi.repository import Adw
 from gi.repository import Gtk, Gdk
 
 from . import utils
 from .thought_widget import ThoughtWidget
 
-@Gtk.Template(resource_path='/ir/mirsobhan/apps/Thoughts/ui/canvas_screen.ui')
+
+@Gtk.Template(resource_path="/ir/mirsobhan/apps/Thoughts/ui/canvas_screen.ui")
 class CanvasScreen(Gtk.ScrolledWindow):
-    __gtype_name__ = 'CanvasScreen'
+    __gtype_name__ = "CanvasScreen"
 
     _canvas = Gtk.Template.Child()
 
@@ -68,11 +68,10 @@ class CanvasScreen(Gtk.ScrolledWindow):
         grab_cursor = Gdk.Cursor.new_from_name("grab")
         self.set_cursor(grab_cursor)
 
-
     # thoughts
 
-    def insert_thought(self, thought_widget, scroll: bool =False):
-        x,y = thought_widget.thought.position
+    def insert_thought(self, thought_widget, scroll: bool = False):
+        x, y = thought_widget.thought.position
         self._canvas.put(thought_widget, x, y)
 
         if scroll:

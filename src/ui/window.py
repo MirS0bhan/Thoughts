@@ -19,19 +19,22 @@
 
 import random
 from pathlib import Path
+from typing import Tuple
 
 from gi.repository import Adw
-from gi.repository import Gtk, Gdk
+from gi.repository import Gtk
 
 from .thought_widget import ThoughtWidget
-from .intro_page import IntroPage
-from .canvas_screen import CanvasScreen
 
-from thoughts.lib import ThoughtModel, ThoughtsManager
+from thoughts.lib import ThoughtsManager
 
-@Gtk.Template(resource_path='/ir/mirsobhan/apps/Thoughts/ui/window.ui')
+from .canvas_screen import CanvasScreen  # noqa: F401
+from .intro_page import IntroPage  # noqa: F401
+
+
+@Gtk.Template(resource_path="/ir/mirsobhan/apps/Thoughts/ui/window.ui")
 class ThoughtsWindow(Adw.ApplicationWindow):
-    __gtype_name__ = 'ThoughtsWindow'
+    __gtype_name__ = "ThoughtsWindow"
 
     path: Path
     thoughts_manager: ThoughtsManager
@@ -56,25 +59,31 @@ class ThoughtsWindow(Adw.ApplicationWindow):
 
     def setup_canvas_actions(self):
         self.application.create_action("save-file", self.save_file_action, ["<Ctrl>s"])
-        self.application.create_action("zen-mode", self.toggle_zen_mode_action, ["<Ctrl><Shift>z"])
-        self.application.create_action("new-thought", self.new_thought_action, ["<Ctrl>t"])
+        self.application.create_action(
+            "zen-mode", self.toggle_zen_mode_action, ["<Ctrl><Shift>z"]
+        )
+        self.application.create_action(
+            "new-thought", self.new_thought_action, ["<Ctrl>t"]
+        )
 
     def new_thought_action(self, *args):
         new_thought = self.thoughts_manager.new()
         thought_widget = ThoughtWidget(new_thought)
 
-        position = find_place_to_insert_thought()
-        thought_widget.thought.position = [x,y]
+        position = self.find_place_to_insert_thought()
+        thought_widget.thought.position = position
 
-        self._canvas_screen.insert_thought(thought_widget, scroll = True)
+        self._canvas_screen.insert_thought(thought_widget, scroll=True)
 
-    def find_place_to_insert_thought(self) -> Tuple[int] :
+    def find_place_to_insert_thought(self) -> Tuple[int]:
         # TODO: reimplement function to place cards ensuring no overlap
         padding = 200
-        x,y = random.choice(range(padding,3200-padding)), random.choice(range(padding,1800-padding))
+        x, y = (
+            random.choice(range(padding, 3200 - padding)),
+            random.choice(range(padding, 1800 - padding)),
+        )
 
-        return (x,y)
-
+        return (x, y)
 
     def toggle_zen_mode_action(self, *args):
         self._headerbar.set_visible(not self._headerbar.is_visible())
@@ -120,16 +129,12 @@ class ThoughtsWindow(Adw.ApplicationWindow):
         self.setup_canvas_actions()
         self.setup_thoughts()
 
-
     # Thoughts section
 
     def setup_thoughts(self):
         for thought in self.thoughts_manager.thoughts_list:
-            self._canvas_screen.insert_thought(thought_widget:=ThoughtWidget(thought))
+            self._canvas_screen.insert_thought(thought_widget := ThoughtWidget(thought))
         # here it would scroll to the last thought.
         # this can also be done by adding last thought in database
         # FIXME: not scrolling
         self._canvas_screen._scroll_to_thought(thought_widget)
-
-
-

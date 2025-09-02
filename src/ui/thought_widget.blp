@@ -3,6 +3,8 @@ using Gtk 4.0;
 template $ThoughtWidget: Box {
   width-request: 500;
   height-request: 100;
+  vexpand: true;
+  hexpand: true;
 
   Box {
     valign: center;
@@ -14,6 +16,8 @@ template $ThoughtWidget: Box {
     height-request: 100;
     orientation: vertical;
     spacing: 18;
+    vexpand: true;
+    hexpand: true;
 
     Entry _title {
       placeholder-text: _("title");
@@ -44,6 +48,8 @@ template $ThoughtWidget: Box {
 
     Box _tags {
       spacing: 8;
+      vexpand: true;
+      hexpand: true;
       orientation: horizontal;
     }
   }
