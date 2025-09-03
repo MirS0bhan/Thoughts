@@ -4,12 +4,12 @@
 # sobhan <me@mirsobhan.ir>, 2025.
 # میر سبحان <me@mirsobhan.ir>, 2025.
 #
-#: src/ui/thought_widget.blp:26 src/ui/tag_widget.blp:4 src/ui/window.blp:30
+#: src/ui/thought_widget.blp:26 src/ui/tag_widget.blp:4 src/ui/window.blp:29
 msgid ""
 msgstr ""
 "Project-Id-Version: thoughts 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-03 18:48+0330\n"
+"POT-Creation-Date: 2025-09-03 19:08+0330\n"
 "PO-Revision-Date: 2025-09-03 14:37+0330\n"
 "Last-Translator: میر سبحان <me@mirsobhan.ir>\n"
 "Language-Team: Persian\n"
@@ -29,7 +29,7 @@ msgid "GTK;"
 msgstr ""
 
 #: data/ir.mirsobhan.apps.Thoughts.metainfo.xml.in:7 src/ui/intro_page.blp:17
-#: src/ui/window.blp:5 src/ui/window.blp:29
+#: src/ui/window.blp:5 src/ui/window.blp:28
 msgid "Thoughts"
 msgstr "افکار"
 
@@ -64,38 +64,38 @@ msgstr "عنوان"
 msgid "Thoughts Icon"
 msgstr "افکار"
 
-#: src/ui/window.blp:15
+#: src/ui/window.blp:14
 msgid "Open"
 msgstr "گشو"
 
-#: src/ui/window.blp:17
+#: src/ui/window.blp:16
 msgid "Open last brains"
-msgstr "گشودن آخرین مغز	"
+msgstr "گشودن آخرین مغز\t"
 
-#: src/ui/window.blp:23
+#: src/ui/window.blp:22
 msgid "New thought"
 msgstr "فکر جدید"
 
-#: src/ui/window.blp:38
+#: src/ui/window.blp:37
 msgid "Main Menu"
 msgstr "منوی اصلی"
 
-#: src/ui/window.blp:45
+#: src/ui/window.blp:44
 msgid "Magic order"
 msgstr "مرتب‌سازی جادویی"
 
-#: src/ui/window.blp:69
+#: src/ui/window.blp:68
 msgid "_Preferences"
 msgstr "_ترجیحات"
 
-#: src/ui/window.blp:74
+#: src/ui/window.blp:73
 msgid "_Keyboard Shortcuts"
 msgstr "_کلید‌های میانبر"
 
-#: src/ui/window.blp:79
+#: src/ui/window.blp:78
 msgid "_About Thoughts"
 msgstr "_دربارهٔ افکار"
 
-#: src/ui/window.blp:83
+#: src/ui/window.blp:82
 msgid "_Zen mode"
 msgstr "حالت _ذن"
