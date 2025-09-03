@@ -1,7 +1,7 @@
 using Gtk 4.0;
 
 template $ThoughtWidget: Box {
-  width-request: 500;
+  width-request: 400;
   height-request: 100;
 
   Box {
@@ -10,8 +10,6 @@ template $ThoughtWidget: Box {
     margin-start: 18;
     margin-end: 18;
     margin-bottom: 18;
-    width-request: 500;
-    height-request: 100;
     orientation: vertical;
     spacing: 18;
     Entry _title {
@@ -35,6 +33,7 @@ template $ThoughtWidget: Box {
       visible: true;
       hexpand: true;
       vexpand: true;
+      height-request: 30;
 
       styles [
         "body",

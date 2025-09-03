@@ -30,20 +30,12 @@ class FilterWidget(Gtk.Box):
     _filter_tags = Gtk.Template.Child()
     _thoughts_list = Gtk.Template.Child()
 
-    def __init__(self,tags = [], thought_list = [], **kwargs):
+    def __init__(self, on_click_filter_tag_add, on_click_filter_tag_delete, tags = [], thought_list = [], **kwargs):
         super().__init__(**kwargs)
 
-        for tag in tags:
-            self._filter_tags.append(TagWidget(tag, self.on_click_filter_tag))
+        for tag in set(tags):
+            self._filter_tags.append(TagWidget(tag, on_click_filter_tag_delete))
 
         for thought in thought_list:
-            self._filter_tags.append(ThoughtWidget(thought, self.on_click_filter_tag))
-            self._filter_tags.append(ThoughtWidget(thought, self.on_click_filter_tag))
-
-
-    def on_click_filter_tag(self, tag):
-        # delete tag
-        print("delete Tag", tag.label)
-        ...
-
+            self._thoughts_list.append(ThoughtWidget(thought, on_click_filter_tag_add))
 

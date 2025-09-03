@@ -9,11 +9,12 @@ template $ThoughtsWindow: Adw.ApplicationWindow {
   content: Adw.ToolbarView {
     [top]
     Adw.HeaderBar _headerbar {
+
       [start]
       Adw.SplitButton _file_preset_button {
         label: _("Open");
         use-underline: true;
-        tooltip-text: _("Open Preset");
+        tooltip-text: _("Open last brains");
         action-name: "app.open-file";
       }
 

@@ -50,6 +50,7 @@ class ThoughtsWindow(Adw.ApplicationWindow):
         super().__init__(**kwargs)
 
         self.application = self.get_application()
+        self.tags_filter = []
 
         self.setup_actions()
 
@@ -70,7 +71,7 @@ class ThoughtsWindow(Adw.ApplicationWindow):
 
     def new_thought_action(self, *args):
         new_thought = self.thoughts_manager.new()
-        thought_widget = ThoughtWidget(new_thought, on_tag_filter_clicked)
+        thought_widget = ThoughtWidget(new_thought, self.on_tag_filter_clicked)
 
         position = self.find_place_to_insert_thought()
         thought_widget.thought.position = position
@@ -142,9 +143,24 @@ class ThoughtsWindow(Adw.ApplicationWindow):
         self._canvas_screen._scroll_to_thought(thought_widget)
 
     def on_tag_filter_clicked(self, tag):
+        if self._tag_filter_split_view.get_show_sidebar():
+            self.tags_filter.append(tag.label)
+        else:
+            self.tags_filter.clear()
+            self.tags_filter.append(tag.label)
+
         self.thoughts_manager._build_index()
-        thought_list = self.thoughts_manager.filter(tag.label)
-        fw = FilterWidget([tag.label], thought_list)
+        thought_list = self.thoughts_manager.filter(*self.tags_filter)
+        fw = FilterWidget(self.on_tag_filter_clicked,self.on_tag_filter_clicked_delete,self.tags_filter, thought_list)
         self._tag_filter_split_view.set_sidebar(fw)
         self._tag_filter_split_view.set_show_sidebar(True)
+
+    def on_tag_filter_clicked_delete(self, tag):
+        self.tags_filter.remove(tag.label)
+
+        self.thoughts_manager._build_index()
+        thought_list = self.thoughts_manager.filter(*self.tags_filter)
+        fw = FilterWidget(self.on_tag_filter_clicked,self.on_tag_filter_clicked_delete,self.tags_filter, thought_list)
+        self._tag_filter_split_view.set_sidebar(fw)
+
 

@@ -2,21 +2,29 @@ using Gtk 4.0;
 using Adw 1;
 
 template $FilterWidget: Box {
-  Box {
-    margin-top: 30;
-    margin-start: 30;
-    margin-end: 30;
-    margin-bottom: 30;
-    spacing: 50;
-
-    orientation: horizontal;
-
-    Box _filter_tags {
+  Adw.Clamp {
+    maximum-size: 200;
+    Box {
+      margin-top: 30;
+      margin-start: 30;
+      margin-end: 30;
+      margin-bottom: 30;
+      spacing: 50;
       orientation: vertical;
-    }
 
-    Box _thoughts_list {
-      hexpand: false;
+
+      Box _filter_tags {
+        spacing: 8;
+        hexpand: true;
+        orientation: horizontal;
+      }
+
+      Box _thoughts_list {
+        spacing: 20;
+        vexpand: false;
+        orientation: vertical;
+
+      }
     }
   }
 }
